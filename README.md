@@ -1,5 +1,7 @@
 # README
 
+Get all 10 Failing Rspec tests to pass by typing "rspec" into the command line
+
 Test 1: There is a failing implementation of a new feature! A new intern was supposed to add an image uploader feature to our application, but it isn’t working! Your job is to go in and save the day by fixing the broken feature and enabling photos to finally be uploaded. 
 
 Test 2: Marketing is waiting on our latest new feature to come out, the fancifier. Guaranteed to revolutionize photo uploading, the fancifier enables users to turn their titles into palindromes. They want you to be able to take a word like Panda and turn it into PandaadnaP, the same intern has already started it but abandoned the project. You need to go into lib/fancifier.rb and fix the broken features by filling in the methods. 
