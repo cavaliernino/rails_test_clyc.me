@@ -4,4 +4,8 @@ class Post < ApplicationRecord
   def palindrome
     self.title += self.title.reverse
   end
+
+  def palindrome?
+    self.title == self.title.reverse
+  end
 end
