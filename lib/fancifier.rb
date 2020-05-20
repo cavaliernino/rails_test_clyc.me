@@ -9,6 +9,8 @@ class Fancifier
 	end
 
 	def method_missing(name, *args, &block)
+		caps_name = name.slice(0,1).capitalize + name.slice(1..-1)
+		Color.find(name: caps_name).code
 	end
 
 	def respond_to_missing(name, *args)
