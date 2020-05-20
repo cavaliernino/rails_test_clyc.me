@@ -5,11 +5,14 @@
 	<strong>Title:</strong>
 </div>
   <%= @post.title %>
-  <div class="palindrome" >Insert Palindrome
+  <div class="palindrome" >
+    <%= @post.palindrome %>
   </div>
-  <div class="detect_palindrome" >Print Palindrome Results
+  <div class="detect_palindrome" >
+    <%#= @post.is_palindrome %>
   </div>
-  <div class="detect_smallest_palindrome">Detect Smallest Palindrome Here
+  <div class="detect_smallest_palindrome">
+    <%#= @post.smallest_palindrome %>
   </div>
 
 </p>
