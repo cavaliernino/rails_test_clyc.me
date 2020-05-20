@@ -2,10 +2,23 @@ class Post < ApplicationRecord
   has_one_attached :photo
 
   def palindrome
-    self.title += self.title.reverse
+    title + title.reverse
   end
 
   def palindrome?
-    self.title == self.title.reverse
+    title == title.reverse
+  end
+
+  def longest_palindrome(string = title, size = title.size)
+    string.size.times do |init|
+      break if init + size > string.size
+
+      reversed_string = string[init, size].reverse
+      return false if size < 2
+      if string[init, size].eql? reversed_string
+        return 'longest palindrome: ' + reversed_string + ' .'
+      end
+    end
+    longest_palindrome(string, size - 1)
   end
 end
