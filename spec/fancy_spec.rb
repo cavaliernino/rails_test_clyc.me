@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'fancifier'
 
 RSpec.describe "Fancifier", type: :feature do
-	fixtures :colors, :posts
 
 	it 'makes a word into a palindrome' do
 		
