@@ -75,24 +75,32 @@ class Graph
     @path << dest
   end
 
-  def shortest_paths(source)
-    dijkstra(source)
-    result = ''
-    nodes_for_paths = @nodes.clone
-    nodes_for_paths.delete source
+  def obtain_path
+    last_n = nil
+    @path.each do |n|
+      @result += '-->' if @previous[n] != -1
+      @result += n
+      last_n = n
+    end
+    @result += " : #{@distance[last_n]}\n"
+  end
+
+  def get_paths(nodes_for_paths)
     nodes_for_paths.each do |node|
       @path = []
       find_path(node)
-      result += 'Target(' + node + ')  '
-      last_n = nil
-      @path.each do |n|
-        result += '-->' if @previous[n] != -1
-        result += n
-        last_n = n
-      end
-      result += " : #{@distance[last_n]}\n"
+      @result += 'Target(' + node + ')  '
+      obtain_path
     end
-    result
+    @result
+  end
+
+  def shortest_paths(source)
+    dijkstra(source)
+    @result = ''
+    nodes_for_paths = @nodes.clone
+    nodes_for_paths.delete source
+    get_paths(nodes_for_paths)
   end
 
 end
