@@ -6,6 +6,7 @@ class Graph
     @graph = {}
     @previous = {}
     @nodes = []
+    @path = []
   end
 
   def connect_graph(source, target, weight)
@@ -14,9 +15,7 @@ class Graph
     else
       graph[source][target] = weight
     end
-    if (!nodes.include?(source))
-      nodes << source
-    end
+    nodes << source if (!nodes.include?(source))
   end
 
   def add_edge(source, target, weight)
@@ -28,9 +27,7 @@ class Graph
     min_distance = INFINITY
     min_distance_node = nil
     nodes.each do |node|
-      if @distance[node] < min_distance
-        min_distance_node = node
-      end
+      min_distance_node = node if @distance[node] < min_distance
     end
     min_distance_node
   end
@@ -38,60 +35,80 @@ class Graph
   def neighbors(node, node_list)
     neighbor_dict = @graph[node]
     neighbor_dict.each do |neighbor|
-      unless node_list.include? neighbor
-        neighbor_dict.delete neighbor
-      end
+      neighbor_dict.delete neighbor unless node_list.include? neighbor
     end
     neighbor_dict
   end
 
-  def dijkstra(source)
+  def dijkstra_init(source)
     @distance = {}
-    unvisited = []
+    @unvisited = []
     @nodes.each do |node|
       @distance.store(node, INFINITY)
       @previous.store(node, -1)
-      unvisited << node
+      @unvisited << node
     end
     @distance.store(source, 0)
+  end
 
-    while unvisited.any?
-      node = min_distance_node(unvisited)
-      unvisited.delete(node)
-      neighbors(node, unvisited).each do |neighbor|
-        alt = @distance[node] + @graph[node][neighbor[0]]
-        if alt < @distance[neighbor[0]]
-          @distance[neighbor[0]] = alt
-          @previous[neighbor[0]] = node
-        end
+  def check_neighbors(node)
+    neighbors(node, @unvisited).each do |neighbor|
+      alt = @distance[node] + @graph[node][neighbor[0]]
+      if alt < @distance[neighbor[0]]
+        @distance[neighbor[0]] = alt
+        @previous[neighbor[0]] = node
       end
     end
   end
 
-  def find_path(dest)
-    if @previous[dest] != -1
-      find_path @previous[dest]
+  def dijkstra(source)
+    dijkstra_init(source)
+    while @unvisited.any?
+      node = min_distance_node(@unvisited)
+      @unvisited.delete(node)
+      check_neighbors(node)
     end
+  end
+
+  def find_path(dest)
+    find_path @previous[dest] if @previous[dest] != -1
     @path << dest
   end
 
   def shortest_paths(source)
+    dijkstra(source)
+    result = ''
+    nodes_for_paths = @nodes.clone
+    nodes_for_paths.delete source
+    nodes_for_paths.each do |node|
+      @path = []
+      find_path(node)
+      result += 'Target(' + node + ')  '
+      last_n = nil
+      @path.each do |n|
+        result += '-->' if @previous[n] != -1
+        result += n
+        last_n = n
+      end
+      result += " : #{@distance[last_n]}\n"
+    end
+    result
   end
 
 end
 
 if __FILE__ == $0
   gr = Graph.new
-  gr.add_edge("a", "c", 7)
-  gr.add_edge("a", "e", 14)
-  gr.add_edge("a", "f", 9)
-  gr.add_edge("c", "d", 15)
-  gr.add_edge("c", "f", 10)
-  gr.add_edge("d", "f", 11)
-  gr.add_edge("d", "b", 6)
-  gr.add_edge("f", "e", 2)
-  gr.add_edge("e", "b", 9)
-  gr.shortest_paths("a")
+  gr.add_edge('a', 'c', 7)
+  gr.add_edge('a', 'e', 14)
+  gr.add_edge('a', 'f', 9)
+  gr.add_edge('c', 'd', 15)
+  gr.add_edge('c', 'f', 10)
+  gr.add_edge('d', 'f', 11)
+  gr.add_edge('d', 'b', 6)
+  gr.add_edge('f', 'e', 2)
+  gr.add_edge('e', 'b', 9)
+  gr.shortest_paths('a')
   gr.print_result 
 
 end
