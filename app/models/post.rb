@@ -1,5 +1,6 @@
 class Post < ApplicationRecord
   has_one_attached :photo
+  belongs_to :color, optional: true
 
   def palindrome
     title + title.reverse
@@ -20,5 +21,9 @@ class Post < ApplicationRecord
       end
     end
     longest_palindrome(string, size - 1)
+  end
+
+  def color_code
+    '#FF0000'
   end
 end
