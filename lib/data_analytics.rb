@@ -4,7 +4,7 @@ class Graph
 
   def initialize
     @graph = {}
-    @prev = {}
+    @previous = {}
     @nodes = []
   end
 
@@ -50,7 +50,7 @@ class Graph
     unvisited = []
     @nodes.each do |node|
       @distance.store(node, INFINITY)
-      @prev.store(node, nil)
+      @previous.store(node, -1)
       unvisited << node
     end
     @distance.store(source, 0)
@@ -62,7 +62,7 @@ class Graph
         alt = @distance[node] + @graph[node][neighbor[0]]
         if alt < @distance[neighbor[0]]
           @distance[neighbor[0]] = alt
-          @prev[neighbor[0]] = node
+          @previous[neighbor[0]] = node
         end
       end
     end
